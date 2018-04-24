@@ -1,0 +1,36 @@
+{
+  "name": "hotelmanagementsystem-native",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "babel-preset-react-native-stage-0": "^1.0.1",
+    "jest": "^22.4.3",
+    "jest-react-native": "^18.0.0",
+    "react-test-renderer": "16.3.0-alpha.1"
+  },
+  "scripts": {
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "dependencies": {
+    "antd-init": "^2.0.6",
+    "axios": "^0.18.0",
+    "bs-moment": "^0.2.4",
+    "bs-platform": "^3.0.0",
+    "bs-react-native": "^0.6.0",
+    "react": "16.3.0",
+    "react-native": "~0.54.1",
+    "react-native-camera": "^1.1.1",
+    "react-native-qrcode-scanner": "^1.0.1",
+    "react-native-router-flux": "^4.0.0-beta.28",
+    "react-redux": "^5.0.7",
+    "reason-react": "^0.3.4",
+    "redux": "^4.0.0",
+    "redux-axios-middleware": "^4.0.0"
+  }
+}

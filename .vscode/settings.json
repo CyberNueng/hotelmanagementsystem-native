@@ -1,0 +1,40 @@
+{
+  // Place your settings in this file to overwrite the default settings
+  "editor.tabSize": 2,
+  "editor.insertSpaces": false,
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/node_modules.prod": true,
+    "**/node_modules.dev": true,
+    "**/bower_components": true,
+    "**/*.bs.js": true,
+    ".next": true
+  },
+  "beautify.language": {
+    "js": {
+      "type": ["javascript", "json"],
+      "filename": [".eslintrc", ".jsbeautifyrc"],
+      "ext": ["js", "json", "tsx"]
+    },
+    "css": ["css", "scss"],
+    "html": ["htm", "html"]
+  },
+  "path-autocomplete.pathMappings": {
+    "components": "${workspace}/src/components/",
+    "common": "${workspace}/src/common/",
+    "modules": "${workspace}/src/modules/",
+    "layout": "${workspace}/src/layout/",
+    "schema": "${workspace}/src/schema/",
+    "src": "${workspace}/src/"
+  },
+  "path-autocomplete.enableFolderTrailingSlash": false,
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "editor.formatOnSave": true,
+  "prettier.eslintIntegration": true,
+  "javascript.format.enable": false,
+  "prettier.semi": false,
+  "prettier.singleQuote": true,
+  "prettier.printWidth": 140,
+  "files.trimTrailingWhitespace": true,
+  "eslint.enable": true
+}
