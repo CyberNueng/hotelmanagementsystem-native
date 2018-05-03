@@ -1,0 +1,23 @@
+{
+  "name": "Customer Request Inventory",
+  "reason": {
+    "react-jsx": 2
+  },
+  "sources": {
+    "dir": "src",
+    "subdirs": true
+  },
+  "package-specs": [
+    {
+      "module": "commonjs",
+      "in-source": true
+    }
+  ],
+  "suffix": ".bs.js",
+  "namespace": false,
+  "bs-dependencies": ["bs-react-native", "reason-react", "bs-moment"],
+  "refmt": 3,
+  "warnings": {
+    "error": "+5"
+  }
+}

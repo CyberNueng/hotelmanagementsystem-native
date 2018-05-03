@@ -1,23 +1,34 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { applyMiddleware, createStore } from 'redux';
 
-export default class App extends React.Component {
+import AppReducer from './src/reducers';
+import { AppRegistry } from 'react-native';
+import AppWithNavigationState from './src/navigators/AppNavigator';
+import { Provider } from 'react-redux';
+import React from 'react';
+import SplashScreen from 'react-native-splash-screen';
+import { middleware } from './src/utils/redux';
+
+const store = createStore(
+  AppReducer,
+  applyMiddleware(middleware),
+);
+
+class ReduxExampleApp extends React.Component {
+  componentDidMount() {
+    // do stuff while splash screen is shown
+    // After having done stuff (such as async tasks) hide the splash screen
+    SplashScreen.hide();
+  }
+  
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
+      <Provider store={store}>
+        <AppWithNavigationState />
+      </Provider>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+AppRegistry.registerComponent('ReduxExample', () => ReduxExampleApp);
+
+export default ReduxExampleApp;
