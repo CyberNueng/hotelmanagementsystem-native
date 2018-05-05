@@ -1,0 +1,5 @@
+export default {
+  LOADING: 'LOADING',
+  ROUTER_URL: 'ROUTER_URL',
+  NOTIFY_MESSAGE: 'NOTIFY_MESSAGE'
+}

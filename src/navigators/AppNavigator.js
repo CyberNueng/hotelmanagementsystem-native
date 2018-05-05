@@ -1,12 +1,15 @@
+import { StackNavigator, addNavigationHelpers } from 'react-navigation';
+
+import LoginPage from '../components/LoginPage';
 import MainPage from '../components/MainPage';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { StackNavigator } from 'react-navigation';
 import { addListener } from '../utils/redux';
 import { connect } from 'react-redux';
 
 export const AppNavigator = StackNavigator({
   Main: { screen: MainPage },
+  Login: { screen: LoginPage },
 });
 
 class AppWithNavigationState extends React.Component {
@@ -19,11 +22,11 @@ class AppWithNavigationState extends React.Component {
     const { dispatch, nav } = this.props;
     return (
       <AppNavigator
-        navigation={{
-          dispatch,
+        navigation={addNavigationHelpers({
+          dispatch: dispatch,
           state: nav,
           addListener,
-        }}
+        })}
       />
     );
   }
@@ -31,6 +34,7 @@ class AppWithNavigationState extends React.Component {
 
 const mapStateToProps = state => ({
   nav: state.nav,
+  //me: LoginSelectors.me(state),
 });
 
 export default connect(mapStateToProps)(AppWithNavigationState);

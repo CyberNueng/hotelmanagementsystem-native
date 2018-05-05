@@ -23,6 +23,7 @@
     "components": "${workspace}/src/components/",
     "navigators": "${workspace}/src/navigators/",
     "reducers": "${workspace}/src/navigators/",
+    "modules": "${workspace}/src/modules/",
     "src": "${workspace}/src/"
   },
   "path-autocomplete.enableFolderTrailingSlash": false,

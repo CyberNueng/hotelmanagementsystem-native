@@ -6,14 +6,13 @@ import AppWithNavigationState from './src/navigators/AppNavigator';
 import { Provider } from 'react-redux';
 import React from 'react';
 import SplashScreen from 'react-native-splash-screen';
+import { compose } from 'redux';
 import { middleware } from './src/utils/redux';
+import thunk from 'redux-thunk';
 
-const store = createStore(
-  AppReducer,
-  applyMiddleware(middleware),
-);
+const store = createStore(AppReducer, compose(applyMiddleware(middleware, thunk)))
 
-class ReduxExampleApp extends React.Component {
+class HotelApp extends React.Component {
   componentDidMount() {
     // do stuff while splash screen is shown
     // After having done stuff (such as async tasks) hide the splash screen
@@ -29,6 +28,6 @@ class ReduxExampleApp extends React.Component {
   }
 }
 
-AppRegistry.registerComponent('ReduxExample', () => ReduxExampleApp);
+AppRegistry.registerComponent('Hotel', () => HotelApp);
 
-export default ReduxExampleApp;
+export default HotelApp;
