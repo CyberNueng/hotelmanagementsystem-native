@@ -7,30 +7,26 @@ import objectToForm from '../utils/objectToForm'
 import snakeize from 'snakeize'
 
 const RNFS = require('react-native-fs');
-const path = RNFS.DocumentDirectoryPath + '/token.txt';
+const path = RNFS.DocumentDirectoryPath + '/wtf.txt';
 const camelcaseKeys = require('camelcase-keys');
 
 const datePattern = [/^\d{4}-\d{2}-\d{2}$/, /^\d{2}-\d{2}-\d{4}$/, /^\d{4}\/\d{2}\/\d{2}$/, /^\d{2}\/\d{2}\/\d{4}$/];
 var token;
 
-async function readToken(){
-  token = `JWT ${await AsyncStorage.getItem('token')}`;
-}
-
-/*function readToken(){
+//use file system because i can't solve Asynstorage not fulfill on android7+ T_T
+function readToken(){
   RNFS.readFile(path, 'utf8')
     .then((contents) => {
       token = `JWT ${contents}`;
-    })
-    .catch((err) => {
-      console.log(err.message);
-    })
-}*/
+    }).catch((err) => {
+      token = null
+    });
+}
+
 const api = axios.create({
-  baseURL: "http://171.7.182.249:8000/api",
+  baseURL: "http://171.7.183.57:8000/api",
   transformRequest: axios.defaults.transformRequest.concat((data, headers) => {
     readToken();
-    console.log(token)
     if (token) {
       headers['Authorization'] = token;
     }

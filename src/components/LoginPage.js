@@ -5,7 +5,6 @@ import { Button } from 'antd-mobile';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import LoginActions from '../modules/login/actions';
 import LoginSelectors from '../modules/login/selectors';
-import { NavigationActions } from 'react-navigation';
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -26,13 +25,20 @@ class LoginPage extends React.Component {
   onSubmit = () => {
     const username = "room"
     const password = "1234"
-    this.props.login({ username, password })
+    const { login, loginStatus, navigation } = this.props;
+    login({ username, password })
+      .catch((err) => {
+        console.warn(err)
+      })
+
   }
 
   render() {
-    const { loginStatus, navigation } = this.props;
+    const { login, loginStatus, navigation } = this.props;
     if(loginStatus){
-      navigation.dispatch(NavigationActions.navigate({ routeName: 'Main' }))
+      setTimeout(() => {
+        navigation.navigate('Main', {})
+      }, 2000);
     }
     return (
       <View style={styles.container}>

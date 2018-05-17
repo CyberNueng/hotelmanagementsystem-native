@@ -1,11 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { BackHandler, StyleSheet, Text, View } from 'react-native';
 
 import CommonActions from '../common/actions';
 import LoginActions from '../modules/login/actions';
 import LoginSelectors from '../modules/login/selectors';
-import MainCarousel from '../layouts/MainCarousel'
 import React from 'react';
-import { SearchBar } from 'antd-mobile';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 
@@ -20,14 +18,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  search: {
-    height: '10%'
-  },
 });
 
 class MainPage extends React.Component {
   componentWillMount() {
     // fetch user info then set serverSide to false
+    BackHandler.addEventListener('hardwareBackPress', this.setBack);
     const { setLoading, getMe, navigation, me } = this.props;
     setLoading(true)
     getMe().then(
@@ -41,8 +37,18 @@ class MainPage extends React.Component {
     )
   }
 
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.setBack);
+  }
+
+  setBack = () => {
+    const { goBack } = this.props.navigation;
+    goBack();
+    return true;
+  }
+
   render() {
-    const { me, navigation } = this.props;
+    const { me } = this.props;
     if (!me) {
       return (
         <View style={styles.authen}>
@@ -52,13 +58,6 @@ class MainPage extends React.Component {
     } 
     return (
       <View style={styles.container}>
-        <SearchBar
-          placeholder="Search"
-          maxLength={30}
-          onFocus={() => navigation.navigate('Search', {})}
-          cancelText='go'
-        />
-        <MainCarousel />
       </View>
     )
   }
