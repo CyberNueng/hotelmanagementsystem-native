@@ -1,23 +1,26 @@
-import { BackHandler, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, BackHandler, Dimensions, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
 
 import CommonActions from '../common/actions';
 import LoginActions from '../modules/login/actions';
 import LoginSelectors from '../modules/login/selectors';
 import React from 'react';
-import { SearchBar } from 'antd-mobile';
+import { SearchBar } from 'react-native-elements'
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 
+var {height, width} = Dimensions.get('window');
+height = height-24 //-24 on Android Statusbar
 const styles = StyleSheet.create({
   authen: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#EEE',
     alignItems: 'center',
     justifyContent: 'center',
   },
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+    height: height,
+    width: width,
+    backgroundColor: '#EEE',
   },
   search: {
     height: '10%'
@@ -41,7 +44,11 @@ class SearchPage extends React.Component {
     )
   }
 
-  componentWillUnmount(){
+  componentDidMount() {
+    this.search.focus();
+  }
+
+  componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.setBack);
   }
 
@@ -56,18 +63,22 @@ class SearchPage extends React.Component {
     if (!me) {
       return (
         <View style={styles.authen}>
+          <ActivityIndicator size="large" color="#0000ff" />
           <Text>Check Authorized...</Text>
         </View>
       )
     } 
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
         <SearchBar
+          platform="android"
           placeholder="Search"
-          maxLength={30}
-          cancelText='clear'
+          containerStyle={{height: 50, justifyContent: 'center'}}
+          inputContainerStyle={{paddingTop: 5}}
+          autoFocus
+          ref={search => this.search = search}
         />
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }

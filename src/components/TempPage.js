@@ -1,22 +1,30 @@
-import { BackHandler, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, BackHandler, Dimensions, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
 
 import CommonActions from '../common/actions';
 import LoginActions from '../modules/login/actions';
 import LoginSelectors from '../modules/login/selectors';
 import React from 'react';
+import TabMenu from '../layouts/TabMenu';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 
+var {height, width} = Dimensions.get('window');
+height = height-24 //-24 on Android Statusbar
 const styles = StyleSheet.create({
   authen: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#EEE',
     alignItems: 'center',
     justifyContent: 'center',
   },
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+    height: height,
+    width: width,
+    backgroundColor: '#EEE',
+  },
+  tabBar:{
+    width: width,
+    height: height*0.077,
   },
 });
 
@@ -52,13 +60,18 @@ class MainPage extends React.Component {
     if (!me) {
       return (
         <View style={styles.authen}>
+          <ActivityIndicator size="large" color="#0000ff" />
           <Text>Check Authorized...</Text>
         </View>
       )
     } 
     return (
-      <View style={styles.container}>
-      </View>
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+
+        <View style={styles.tabBar}> 
+          <TabMenu navigate={navigation.navigate} page='Home'/>
+        </View>
+      </KeyboardAvoidingView>
     )
   }
 }

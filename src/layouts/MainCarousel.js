@@ -1,62 +1,48 @@
-import { Carousel, WingBlank } from 'antd-mobile';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import Carousel from 'react-native-snap-carousel';
 import React from 'react';
 
+var {height, width} = Dimensions.get('window');
+height = height-24 //-24 on Android Statusbar
 const styles = StyleSheet.create({
-  spaceCarousel: {
-    padding: 16 + 'px',
-    backgroundColor: '#DEF1E5',
-    overflow: 'hidden',
+  imageitem: {
+    height: '100%',
+    width: '100%',
   },
+  carousel: {
+    height: height*0.36,
+    backgroundColor: '#DDD',
+  }
 });
 
 class MainCarousel extends React.Component {
   state = {
-    data: ['1', '2', '3'],
+    data: [{title: 'A', image: 'https://www.w3schools.com/w3css/img_lights.jpg'}, {title: 'B', image: 'https://www.w3schools.com/w3css/img_lights.jpg'}]
   }
-  componentDidMount() {
-    // simulate img loading
-    setTimeout(() => {
-      this.setState({
-        data: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
-      });
-    }, 100);
-  }
-  render() {
+
+  _renderItem ({item, index}) {
     return (
-      <View>
-        <Carousel className="spaceCarousel"
-          frameOverflow="visible"
-          cellSpacing={10}
-          slideWidth={0.8}
+      <Image style={styles.imageitem} stresizeMode="cover" source={{uri: item.image}} />
+    );
+}
+
+render () {
+    return (
+      <View style={styles.carousel}>
+        <Carousel
+          layout={'default'}
+          ref={(c) => { this._carousel = c; }}
+          data={this.state.data}
+          renderItem={this._renderItem}
+          sliderWidth={width}
+          itemWidth={width}
+          loop
           autoplay
-          infinite
-          beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
-          afterChange={index => this.setState({ slideIndex: index })}
-        >
-          {this.state.data.map((val, index) => (
-            <TouchableOpacity
-              key={val}
-              onPress={() => console.log('click')}
-              style={{
-                position: 'relative',
-                top: this.state.slideIndex === index ? -10 : 0,
-                height: '80%',
-                boxShadow: '2px 1px 1px rgba(0, 0, 0, 0.2)',
-              }}
-            >
-              <Image
-                source={`https://zos.alipayobjects.com/rmsportal/${val}.png`}
-                style={{ height: '100%', verticalAlign: 'top' }}
-                resizeMode="cover" resizeMode="contain"
-              />
-            </TouchableOpacity>
-          ))}
-        </Carousel>
+        />
       </View>
     );
-  }
+}
 }
 
 export default MainCarousel
