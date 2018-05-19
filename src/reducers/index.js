@@ -1,6 +1,7 @@
 import { AppNavigator } from '../navigators/AppNavigator';
 import { NavigationActions } from 'react-navigation';
 import { combineReducers } from 'redux';
+import itemReducers from '../modules/item/reducers'
 import loginReducers from '../modules/login/reducers'
 
 // Start with two routes: The Main screen, with the Login screen on top.
@@ -39,6 +40,7 @@ const initialAuthState = { isLoggedIn: false };
 const AppReducer = combineReducers({
   nav,
   login: loginReducers,
+  item: itemReducers,
 });
 
 export default AppReducer;

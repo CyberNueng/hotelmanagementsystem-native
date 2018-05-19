@@ -13,4 +13,8 @@ export default {
   logout() {
     return api.get('/accounts/logout');
   },
+  // Item Module
+  getItemInfo({ itemID }) {
+    return api.post(`/inventory/iteminfo/${itemID}`, { itemID })
+  }
 }

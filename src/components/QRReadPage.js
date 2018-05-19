@@ -1,14 +1,19 @@
-import { ActivityIndicator, BackHandler, Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, BackHandler, Dimensions, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import CommonActions from '../common/actions';
+import ItemActions from '../modules/item/actions';
+import ItemSelectors from '../modules/item/selectors';
 import LoginActions from '../modules/login/actions';
 import LoginSelectors from '../modules/login/selectors';
+import { Modal } from 'antd-mobile'
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import React from 'react';
 import TabMenu from '../layouts/TabMenu';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 
+const currency = 'Bath'
+const alert = Modal.alert;
 var {height, width} = Dimensions.get('window');
 height = height-24 //-24 on Android Statusbar
 const styles = StyleSheet.create({
@@ -49,6 +54,13 @@ const styles = StyleSheet.create({
 });
 
 class QRCodePage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      
+    };
+  }
+
   componentWillMount() {
     // fetch user info then set serverSide to false
     BackHandler.addEventListener('hardwareBackPress', this.setBack);
@@ -80,18 +92,59 @@ class QRCodePage extends React.Component {
   }
 
   onSuccess(e) {
+    const { getItemInfo } = this.props;
+    const scanner = this.scanner
     try {
-      readData = JSON.parse(e.data)
-      if(readData.type=='Repair') {
-        console.warn('Repair')
+      readData = JSON.parse(e.data);
+      const type = readData.type,
+        itemID = readData.itemID;
+      if(type=='Repair') {
+        getItemInfo({ itemID }).then(
+          () => {
+            const { itemInfo } = this.props;
+            alert(`Inform repair ${itemInfo[0].itemName}`, 'No cost but are you sure?', [
+              { text: 'Cancel', onPress: () => scanner.reactivate()},
+              { text: 'Ok', onPress: () => [scanner.reactivate()]},
+            ])
+          },
+          (err) => {
+            alert('Error!!', 'Please Try Again Later', [
+              { text: 'Ok', onPress: () => scanner.reactivate()},
+            ])
+          }
+        )
       } 
-      if(readData.type=='Request') {
-        console.warn('Request')
+      if(type=='Request') {
+        getItemInfo({ itemID }).then(
+          () => {
+            const { itemInfo } = this.props;
+            var type = '';
+            switch(itemInfo[0].itemType) {
+              case 'D':
+                type = 'per day'
+              case 'U':
+                type = 'per unit'
+            }
+            alert(`Request ${itemInfo[0].itemName}`, `Price: ${itemInfo[0].reqPrice} ${currency} ${type}`, [
+              { text: 'Cancel', onPress: () => scanner.reactivate()},
+              { text: 'Ok', onPress: () => [scanner.reactivate()]},
+            ])
+          },
+          (err) => {
+            alert('Error!!', 'Please Try Again Later', [
+              { text: 'Ok', onPress: () => scanner.reactivate()},
+            ])
+          }
+        )
       }
     } catch(er) {
-      console.warn('error'+er)
+      Linking.openURL(e.data).catch(err => {
+        alert("Error!!", `QR Data: ${e.data}`, [
+          { text: 'Ok' },
+        ])
+      });
+      setTimeout(function(){ scanner.reactivate(); }, 2000);
     }
-    this.scanner.reactivate();
   }
 
   render() {
@@ -116,7 +169,7 @@ class QRCodePage extends React.Component {
             </View>
           }
           bottomContent={
-            <TouchableOpacity style={styles.buttonTouchable} onPress={()=>navigation.navigate('Home',{})}>
+            <TouchableOpacity style={styles.buttonTouchable} onPress={()=>navigation.goBack()}>
               <Text style={styles.buttonText}>Go Back</Text>
             </TouchableOpacity>
           }
@@ -133,11 +186,13 @@ QRCodePage.navigationOptions = {
 
 const mapStateToProps = state => ({
   me: LoginSelectors.me(state),
+  itemInfo: ItemSelectors.itemInfo(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   getMe: () => dispatch(LoginActions.me()),
   setLoading: status => dispatch(CommonActions.isLoading(status)),
+  getItemInfo: ({ itemID }) => dispatch(ItemActions.getItemInfo({ itemID })),
 });
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(QRCodePage);
