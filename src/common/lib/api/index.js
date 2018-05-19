@@ -15,6 +15,10 @@ export default {
   },
   // Item Module
   getItemInfo({ itemID }) {
-    return api.post(`/inventory/iteminfo/${itemID}`, { itemID })
+    return api.get(`/inventory/iteminfo/?id=${itemID}`)
+  },
+
+  getPopular()  {
+    return api.get('inventory/popular?limit=10')
   }
 }

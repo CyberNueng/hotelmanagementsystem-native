@@ -3,6 +3,8 @@ import { Col, Row } from 'antd-mobile';
 import { Icon, SearchBar, Text } from 'react-native-elements';
 
 import CommonActions from '../common/actions';
+import ItemActions from '../modules/item/actions';
+import ItemSelectors from '../modules/item/selectors';
 import LoginActions from '../modules/login/actions';
 import LoginSelectors from '../modules/login/selectors';
 import MainCarousel from '../layouts/MainCarousel'
@@ -59,11 +61,20 @@ class MainPage extends React.Component {
   componentWillMount() {
     // fetch user info then set serverSide to false
     Keyboard.dismiss();
-    const { setLoading, getMe, navigation, me } = this.props;
+    const { setLoading, getMe, navigation, me, getPopular } = this.props;
     setLoading(true)
     getMe().then(
       () => {
         setLoading(false)
+        getPopular().then(
+          () => {
+            const { popularItem } = this.props
+            console.warn(popularItem)
+          },
+          () => {
+            console.warn('Connection fail')
+          }
+        )
       },
       () => {
         setLoading(false)
@@ -73,7 +84,7 @@ class MainPage extends React.Component {
   }
 
   render() {
-    const { me, navigation } = this.props;
+    const { me, navigation, popularItem } = this.props;
     if (!me) {
       return (
         <View style={styles.authen}>
@@ -81,7 +92,15 @@ class MainPage extends React.Component {
           <Text>Check Authorized...</Text>
         </View>
       )
-    } 
+    }
+    else if (!popularItem){
+      return (
+        <View style={styles.authen}>
+          <ActivityIndicator size="large" color="red" />
+          <Text>Loading...</Text>
+        </View>
+      )
+    }
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
         <SearchBar
@@ -93,7 +112,7 @@ class MainPage extends React.Component {
         />
         <View style={styles.scroll}>
           <ScrollView>
-            <MainCarousel />
+            <MainCarousel popular={popularItem} />
             <View style={styles.iconrow}>
               <View style={styles.iconitem}>
                 <Icon
@@ -158,11 +177,13 @@ MainPage.navigationOptions = {
 
 const mapStateToProps = state => ({
   me: LoginSelectors.me(state),
+  popularItem: ItemSelectors.popularItem(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   getMe: () => dispatch(LoginActions.me()),
   setLoading: status => dispatch(CommonActions.isLoading(status)),
+  getPopular: () => dispatch(ItemActions.getPopular()),
 });
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(MainPage);

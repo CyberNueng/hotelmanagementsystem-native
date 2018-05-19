@@ -17,13 +17,16 @@ const styles = StyleSheet.create({
 });
 
 class MainCarousel extends React.Component {
-  state = {
-    data: [{title: 'A', image: 'https://www.w3schools.com/w3css/img_lights.jpg'}, {title: 'B', image: 'https://www.w3schools.com/w3css/img_lights.jpg'}]
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [props.popular[0], props.popular[1], props.popular[2], props.popular[3], props.popular[4]]
+    };
   }
 
   _renderItem ({item, index}) {
     return (
-      <Image style={styles.imageitem} stresizeMode="cover" source={{uri: item.image}} />
+      <Image style={styles.imageitem} resizeMode="cover" source={{uri: item.image}} />
     );
 }
 

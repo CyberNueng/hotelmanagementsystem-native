@@ -1,4 +1,4 @@
-import { ActivityIndicator, BackHandler, Dimensions, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, BackHandler, Dimensions, Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import CommonActions from '../common/actions';
 import ItemActions from '../modules/item/actions';
@@ -54,13 +54,6 @@ const styles = StyleSheet.create({
 });
 
 class QRCodePage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      
-    };
-  }
-
   componentWillMount() {
     // fetch user info then set serverSide to false
     BackHandler.addEventListener('hardwareBackPress', this.setBack);
@@ -119,16 +112,23 @@ class QRCodePage extends React.Component {
           () => {
             const { itemInfo } = this.props;
             var type = '';
-            switch(itemInfo[0].itemType) {
+            switch(itemInfo[0].priceType) {
               case 'D':
                 type = 'per day'
               case 'U':
-                type = 'per unit'
+                type = 'per ' + itemInfo[0].amountType
             }
-            alert(`Request ${itemInfo[0].itemName}`, `Price: ${itemInfo[0].reqPrice} ${currency} ${type}`, [
-              { text: 'Cancel', onPress: () => scanner.reactivate()},
-              { text: 'Ok', onPress: () => [scanner.reactivate()]},
-            ])
+            alert(`Request ${itemInfo[0].itemName}\n`+`Price: ${itemInfo[0].reqPrice} ${currency} ${type}`,
+              <Image
+                style={{height: width*1.1, width: width*1.5, marginTop: width*0.1, borderRadius: width*0.03}}
+                source={{uri: itemInfo[0].image}}
+                resizeMode="cover"
+              />,
+              [
+                { text: 'Cancel', onPress: () => scanner.reactivate()},
+                { text: 'Ok', onPress: () => [scanner.reactivate()]},
+              ]
+            )
           },
           (err) => {
             alert('Error!!', 'Please Try Again Later', [
