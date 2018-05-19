@@ -3,6 +3,7 @@ import { StackNavigator, addNavigationHelpers } from 'react-navigation';
 import LoginPage from '../components/LoginPage';
 import MainPage from '../components/MainPage';
 import PropTypes from 'prop-types';
+import QRReadPage from '../components/QRReadPage';
 import React from 'react';
 import SearchPage from '../components/SearchPage';
 import { addListener } from '../utils/redux';
@@ -12,6 +13,7 @@ export const AppNavigator = StackNavigator({
   Main: { screen: MainPage },
   Login: { screen: LoginPage },
   Search: { screen: SearchPage },
+  QR: { screen: QRReadPage }
 });
 
 class AppWithNavigationState extends React.Component {

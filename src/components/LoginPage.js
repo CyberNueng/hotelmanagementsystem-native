@@ -89,6 +89,7 @@ class LoginPage extends React.Component {
             errorStyle={{ color: 'red' }}
             errorMessage={roomnameErr}
             autoFocus
+            containerStyle={{width: '90%'}}
           />
           <Input
             placeholder='Password'
@@ -96,6 +97,7 @@ class LoginPage extends React.Component {
             errorStyle={{ color: 'red' }}
             errorMessage={passwordErr}
             secureTextEntry
+            containerStyle={{width: '90%'}}
           />
           <Button
             large backgroundColor='blue'

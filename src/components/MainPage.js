@@ -1,4 +1,4 @@
-import { ActivityIndicator, Dimensions, KeyboardAvoidingView, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Dimensions, Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, View } from 'react-native';
 import { Col, Row } from 'antd-mobile';
 import { Icon, SearchBar, Text } from 'react-native-elements';
 
@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
 class MainPage extends React.Component {
   componentWillMount() {
     // fetch user info then set serverSide to false
+    Keyboard.dismiss();
     const { setLoading, getMe, navigation, me } = this.props;
     setLoading(true)
     getMe().then(
@@ -135,6 +136,7 @@ class MainPage extends React.Component {
                   raised
                   containerStyle={{backgroundColor:'green'}}
                   size={width*0.07}
+                  onPress={() => navigation.navigate('QR', {})}
                 />
                 <Text style={styles.texticon}>QR-Scan</Text>
               </View>
@@ -156,12 +158,10 @@ MainPage.navigationOptions = {
 
 const mapStateToProps = state => ({
   me: LoginSelectors.me(state),
-  loginStatus: LoginSelectors.loginStatus(state)
 });
 
 const mapDispatchToProps = dispatch => ({
   getMe: () => dispatch(LoginActions.me()),
-  login: ({ username, password }) => dispatch(LoginActions.login({ username, password })),
   setLoading: status => dispatch(CommonActions.isLoading(status)),
 });
 

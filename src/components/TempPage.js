@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
   tabBar:{
     width: width,
-    height: height*0.077,
+    height: 50,
   },
 });
 
