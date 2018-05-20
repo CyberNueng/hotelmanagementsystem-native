@@ -24,7 +24,7 @@ function readToken(){
 }
 
 const api = axios.create({
-  baseURL: "http://171.7.183.57:8000/api",
+  baseURL: "http://171.7.68.116:8000/api",
   transformRequest: axios.defaults.transformRequest.concat((data, headers) => {
     readToken();
     if (token) {

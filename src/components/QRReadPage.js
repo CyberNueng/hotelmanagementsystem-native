@@ -84,6 +84,28 @@ class QRCodePage extends React.Component {
     return true;
   }
 
+  request = (itemID) => {
+    const { requestItem } = this.props
+    const username = this.props.me.username,
+      amount = 1;
+    requestItem({ username, itemID, amount }).then(
+      () => {
+        setTimeout(() => {
+          alert('Done', 'This request has sent', [
+            { text: 'Ok'},
+          ])
+        }, 500);
+      },
+      (err) => {
+        setTimeout(() => {
+          alert('Error!!', 'Please Try Again Later', [
+            { text: 'Ok'},
+          ])
+        }, 500);
+      }
+    )
+  }
+
   onSuccess(e) {
     const { getItemInfo } = this.props;
     const scanner = this.scanner
@@ -112,6 +134,7 @@ class QRCodePage extends React.Component {
           () => {
             const { itemInfo } = this.props;
             var type = '';
+            request = this.request
             switch(itemInfo[0].priceType) {
               case 'D':
                 type = 'per day'
@@ -126,7 +149,7 @@ class QRCodePage extends React.Component {
               />,
               [
                 { text: 'Cancel', onPress: () => scanner.reactivate()},
-                { text: 'Ok', onPress: () => [scanner.reactivate()]},
+                { text: 'Ok', onPress: () => [scanner.reactivate(),request(itemInfo[0].id)]},
               ]
             )
           },
@@ -193,6 +216,7 @@ const mapDispatchToProps = dispatch => ({
   getMe: () => dispatch(LoginActions.me()),
   setLoading: status => dispatch(CommonActions.isLoading(status)),
   getItemInfo: ({ itemID }) => dispatch(ItemActions.getItemInfo({ itemID })),
+  requestItem: ({ username, itemID, amount }) => dispatch(ItemActions.requestItem({ username, itemID, amount })),
 });
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(QRCodePage);

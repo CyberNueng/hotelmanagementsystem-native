@@ -9,6 +9,7 @@ import LoginActions from '../modules/login/actions';
 import LoginSelectors from '../modules/login/selectors';
 import MainCarousel from '../layouts/MainCarousel'
 import React from 'react';
+import Recommend from '../layouts/Recommend'
 import TabMenu from '../layouts/TabMenu'
 import { bold } from 'ansi-colors';
 import { compose } from 'redux';
@@ -41,12 +42,6 @@ const styles = StyleSheet.create({
   texticon: {
     fontSize: height*0.02
   },
-  texthead: {
-    fontSize: height*0.04,
-    fontWeight: 'bold',
-    marginTop: height*0.02,
-    marginLeft: width*0.03
-  },
   scroll: {
     width: width,
     height: height-100, //-100 from tabBar and serachber
@@ -54,6 +49,11 @@ const styles = StyleSheet.create({
   tabBar:{
     width: width,
     height: 50,
+  },
+  searchbar: {
+    height: 50,
+    justifyContent: 'center',
+    elevation: 3,
   },
 });
 
@@ -69,7 +69,6 @@ class MainPage extends React.Component {
         getPopular().then(
           () => {
             const { popularItem } = this.props
-            console.warn(popularItem)
           },
           () => {
             console.warn('Connection fail')
@@ -106,7 +105,7 @@ class MainPage extends React.Component {
         <SearchBar
           platform="android"
           placeholder="Search"
-          containerStyle={{height: 50, justifyContent: 'center'}}
+          containerStyle={styles.searchbar}
           inputContainerStyle={{marginTop: height*0.005}}
           onFocus = {()=> navigation.navigate('Search', {})}
         />
@@ -160,7 +159,7 @@ class MainPage extends React.Component {
                 <Text style={styles.texticon}>QR-Scan</Text>
               </View>
             </View>
-            <Text style={styles.texthead}>Recommended</Text>
+            <Recommend popular={popularItem}/>
           </ScrollView>
         </View>
         <View style={styles.tabBar}> 

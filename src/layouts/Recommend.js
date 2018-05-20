@@ -1,0 +1,173 @@
+import { ActivityIndicator, Dimensions, Image, StyleSheet, View } from 'react-native';
+
+import React from 'react';
+import { Text } from 'react-native-elements';
+
+var {height, width} = Dimensions.get('window');
+height = height-24 //-24 on Android Statusbar
+const styles = StyleSheet.create({
+  container: {
+    height: height*0.38,
+    width: width,
+    backgroundColor: '#EEE',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  recommendbox: {
+    height: height*0.36,
+    width: width-2,
+    backgroundColor: '#FFF'
+  },
+  inrow: {
+    height: height*0.12,
+    flexDirection: 'row'
+  },
+  incolumn:{
+    height: '100%',
+    width: '50%',
+    borderWidth: 1,
+    borderColor: '#EEE',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  texthead: {
+    fontSize: height*0.033,
+    fontWeight: '400',
+    marginTop: height*0.02,
+    marginLeft: width*0.03
+  },
+  textzone: {
+    height: '100%',
+    justifyContent: 'center',
+    paddingLeft: width*0.02,
+    width: '60%',
+  },
+  imagezone: {
+    height: '80%',
+    width: '38%',
+  },
+  itemtext: {
+    fontSize: height*0.022,
+    fontWeight: '300',
+    color: '#000'
+  },
+  pricetext: {
+    fontSize: height*0.020,
+    fontWeight: '200',
+    color: '#333'
+  },
+})
+
+class Recommend extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      popular: [props.popular[5],props.popular[6],props.popular[7],props.popular[8],props.popular[9],props.popular[10]]
+    }
+  }
+
+  componentDidMount() {
+    const { popular } = this.state
+    for(var i in popular) {
+      switch(popular[i].priceType) {
+        case 'D':
+          popular[i].priceType = '/ day'
+        case 'U':
+          popular[i].priceType = '/ ' + popular[i].amountType
+      }
+    }
+  }
+
+  render() {
+    const { popular } = this.state
+    return (
+      <View>
+        <Text style={styles.texthead}>Recommended</Text>
+        <View style={styles.container}>
+          <View style={styles.recommendbox}>
+            <View style={styles.inrow}>
+              <View style={styles.incolumn}>
+                <View style={styles.textzone}>
+                  <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{popular[0].itemName}</Text>
+                  <Text style={styles.pricetext}>{`Price:\n${popular[0].reqPrice} ${popular[0].priceType}`}</Text>
+                </View>
+                <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: popular[0].image}} />
+              </View>
+              <View style={styles.incolumn}>
+                <View style={styles.textzone}>
+                  <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{popular[1].itemName}</Text>
+                  <Text style={styles.pricetext}>{`Price:\n${popular[1].reqPrice} ${popular[1].priceType}`}</Text>
+                </View>
+                <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: popular[1].image}} />
+              </View>
+            </View>
+            <View style={styles.inrow}>
+              <View style={styles.incolumn}>
+                <View style={styles.textzone}>
+                  <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{popular[2].itemName}</Text>
+                  <Text style={styles.pricetext}>{`Price:\n${popular[2].reqPrice} ${popular[2].priceType}`}</Text>
+                </View>
+                <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: popular[2].image}} />
+              </View>
+              <View style={styles.incolumn}>
+                <View style={styles.textzone}>
+                  <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{popular[3].itemName}</Text>
+                  <Text style={styles.pricetext}>{`Price:\n${popular[3].reqPrice} ${popular[3].priceType}`}</Text>
+                </View>
+                <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: popular[3].image}} />
+              </View>
+            </View>
+            <View style={styles.inrow}>
+              <View style={styles.incolumn}>
+                <View style={styles.textzone}>
+                  <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{popular[4].itemName}</Text>
+                  <Text style={styles.pricetext}>{`Price:\n${popular[4].reqPrice} ${popular[4].priceType}`}</Text>
+                </View>
+                <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: popular[4].image}} />
+              </View>
+              <View style={styles.incolumn}>
+                <View style={styles.textzone}>
+                  <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{popular[5].itemName}</Text>
+                  <Text style={styles.pricetext}>{`Price:\n${popular[5].reqPrice} ${popular[5].priceType}`}</Text>
+                </View>
+                <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: popular[5].image}} />
+              </View>
+            </View>
+          </View>
+        </View>
+        <Text style={styles.texthead}>New</Text>
+        <View style={styles.container}>
+          <View style={styles.recommendbox}>
+            <View style={styles.inrow}>
+              <View style={styles.incolumn}>
+
+              </View>
+              <View style={styles.incolumn}>
+              
+              </View>
+            </View>
+            <View style={styles.inrow}>
+              <View style={styles.incolumn}>
+              
+              </View>
+              <View style={styles.incolumn}>
+              
+              </View>
+            </View>
+            <View style={styles.inrow}>
+              <View style={styles.incolumn}>
+              
+              </View>
+              <View style={styles.incolumn}>
+              
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    )
+  }
+}
+
+export default Recommend

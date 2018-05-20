@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#FFF',
     borderRadius: 4,
+    elevation: 3,
   },
   logintext: {
     color: '#000',

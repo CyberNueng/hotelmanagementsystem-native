@@ -22,8 +22,11 @@ const styles = StyleSheet.create({
     width: width,
     backgroundColor: '#EEE',
   },
-  search: {
-    height: '10%'
+  searchbar: {
+    height: 50,
+    justifyContent: 'center',
+    backgroundColor: '#7CE',
+    elevation: 3,
   },
 });
 
@@ -73,8 +76,8 @@ class SearchPage extends React.Component {
         <SearchBar
           platform="android"
           placeholder="Search"
-          containerStyle={{height: 50, justifyContent: 'center'}}
-          inputContainerStyle={{paddingTop: 5}}
+          containerStyle={styles.searchbar}
+          inputContainerStyle={{marginTop: height*0.005}}
           autoFocus
           ref={search => this.search = search}
         />
