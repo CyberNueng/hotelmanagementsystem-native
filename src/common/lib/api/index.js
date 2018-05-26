@@ -18,16 +18,16 @@ export default {
     return api.get(`/inventory/iteminfo/?id=${itemID}`)
   },
 
-  getPopular()  {
-    return api.get('inventory/popular?limit=11')
+  getPopular({ room })  {
+    return api.get(`inventory/popular?limit=11&room=${room}`)
   },
 
-  getNewItem() {
-    return api.get('inventory/newitem')
+  getNewItem({ room }) {
+    return api.get(`inventory/newitem?limit=6&room=${room}`)
   },
 
-  getAllItem() {
-    return api.get('inventory/allitem')
+  getAllItem({ room }) {
+    return api.get(`inventory/allitem?room=${room}`)
   },
 
   getOnlyYou({ room }) {

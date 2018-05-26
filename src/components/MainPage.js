@@ -61,19 +61,15 @@ class MainPage extends React.Component {
   componentWillMount() {
     // fetch user info then set serverSide to false
     Keyboard.dismiss();
-    const { setLoading, getMe, navigation, me, getPopular } = this.props;
+    const { setLoading, getMe, navigation, getPopular, getNewItem } = this.props;
     setLoading(true)
     getMe().then(
       () => {
+        const { me } = this.props
+        const room = me.username
         setLoading(false)
-        getPopular().then(
-          () => {
-            const { popularItem } = this.props
-          },
-          () => {
-            console.warn('Connection fail')
-          }
-        )
+        getPopular({ room })
+        getNewItem({ room })
       },
       () => {
         setLoading(false)
@@ -83,7 +79,7 @@ class MainPage extends React.Component {
   }
 
   render() {
-    const { me, navigation, popularItem } = this.props;
+    const { me, navigation, popularItem, newItem } = this.props;
     if (!me) {
       return (
         <View style={styles.authen}>
@@ -92,7 +88,7 @@ class MainPage extends React.Component {
         </View>
       )
     }
-    else if (!popularItem){
+    else if (!(popularItem && newItem)) {
       return (
         <View style={styles.authen}>
           <ActivityIndicator size="large" color="red" />
@@ -111,7 +107,7 @@ class MainPage extends React.Component {
         />
         <View style={styles.scroll}>
           <ScrollView>
-            <MainCarousel popular={popularItem} />
+            <MainCarousel popular={popularItem} navigate={navigation.navigate} />
             <View style={styles.iconrow}>
               <View style={styles.iconitem}>
                 <Icon
@@ -159,7 +155,7 @@ class MainPage extends React.Component {
                 <Text style={styles.texticon}>QR-Scan</Text>
               </View>
             </View>
-            <Recommend popular={popularItem}/>
+            <Recommend popular={popularItem} newItem={newItem} navigate={navigation.navigate}/>
           </ScrollView>
         </View>
         <View style={styles.tabBar}> 
@@ -177,12 +173,14 @@ MainPage.navigationOptions = {
 const mapStateToProps = state => ({
   me: LoginSelectors.me(state),
   popularItem: ItemSelectors.popularItem(state),
+  newItem: ItemSelectors.newItem(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   getMe: () => dispatch(LoginActions.me()),
   setLoading: status => dispatch(CommonActions.isLoading(status)),
-  getPopular: () => dispatch(ItemActions.getPopular()),
+  getPopular: ({ room }) => dispatch(ItemActions.getPopular({ room })),
+  getNewItem: ({ room }) => dispatch(ItemActions.getNewItem({ room })),
 });
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(MainPage);

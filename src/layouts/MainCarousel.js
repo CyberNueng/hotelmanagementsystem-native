@@ -20,15 +20,18 @@ class MainCarousel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [props.popular[0], props.popular[1], props.popular[2], props.popular[3], props.popular[4]]
+      data: [props.popular[0], props.popular[1], props.popular[2], props.popular[3], props.popular[4]],
     };
   }
 
   _renderItem ({item, index}) {
+    const { navigate } = this.props
     return (
-      <Image style={styles.imageitem} resizeMode="cover" source={{uri: item.image}} />
+      <TouchableOpacity onPress={()=>navigate('Item', {itemInfo: item})}>
+        <Image style={styles.imageitem} resizeMode="cover" source={{uri: item.image}} />
+      </TouchableOpacity>  
     );
-}
+  }
 
 render () {
     return (
@@ -37,7 +40,7 @@ render () {
           layout={'default'}
           ref={(c) => { this._carousel = c; }}
           data={this.state.data}
-          renderItem={this._renderItem}
+          renderItem={this._renderItem.bind(this)}
           sliderWidth={width}
           itemWidth={width}
           loop
@@ -45,7 +48,7 @@ render () {
         />
       </View>
     );
-}
+  }
 }
 
 export default MainCarousel

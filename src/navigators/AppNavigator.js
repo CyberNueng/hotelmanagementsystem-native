@@ -1,5 +1,6 @@
 import { StackNavigator, addNavigationHelpers } from 'react-navigation';
 
+import ItemPage from '../components/ItemPage';
 import LoginPage from '../components/LoginPage';
 import MainPage from '../components/MainPage';
 import PropTypes from 'prop-types';
@@ -13,7 +14,8 @@ export const AppNavigator = StackNavigator({
   Main: { screen: MainPage },
   Login: { screen: LoginPage },
   Search: { screen: SearchPage },
-  QR: { screen: QRReadPage }
+  QR: { screen: QRReadPage },
+  Item: { screen: ItemPage }
 });
 
 class AppWithNavigationState extends React.Component {
