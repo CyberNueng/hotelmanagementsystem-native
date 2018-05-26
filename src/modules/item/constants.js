@@ -3,5 +3,5 @@ export default {
   POPULAR: 'POPULAR',
   REQUEST: 'REQUEST',
   NEW_ITEM: 'NEW_ITEM',
-  ALL_ITEM: 'ALL_ITEM'
+  ALL_ITEM: 'ALL_ITEM',
 }

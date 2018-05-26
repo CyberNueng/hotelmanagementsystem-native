@@ -12,7 +12,7 @@ const actions = {
   getItemInfo: ({ itemID }) => itemInfoApiAction.fetch(Api.getItemInfo, { itemID }),
   getPopular: ({ room }) => popularApiAction.fetch(Api.getPopular, { room }),
   getNewItem: ({ room }) => newItemApiAction.fetch(Api.getNewItem, { room }),
-  getAllItem: ({ room }) => qllItemApiAction.fetch(Api.getAllItem, { room }),
+  getAllItem: ({ room }) => allItemApiAction.fetch(Api.getAllItem, { room }),
   requestItem: ({ username, itemID, amount }) => requestApiAction.request(Api.requestItem, { username, itemID, amount })
 }
 

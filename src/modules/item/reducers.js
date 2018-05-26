@@ -6,7 +6,7 @@ const reducers = combineReducers({
   itemInfo: createApiReducer(constants.ITEM_INFO, {}),
   popularItem: createApiReducer(constants.POPULAR, []),
   newItem: createApiReducer(constants.NEW_ITEM, []),
-  allItem: createApiReducer(constants.ALL_ITEM, [])
+  allItem: createApiReducer(constants.ALL_ITEM, []),
 })
 
 export default reducers

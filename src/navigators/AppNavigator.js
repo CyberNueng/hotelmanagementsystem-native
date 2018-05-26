@@ -40,7 +40,6 @@ class AppWithNavigationState extends React.Component {
 
 const mapStateToProps = state => ({
   nav: state.nav,
-  //me: LoginSelectors.me(state),
 });
 
 export default connect(mapStateToProps)(AppWithNavigationState);

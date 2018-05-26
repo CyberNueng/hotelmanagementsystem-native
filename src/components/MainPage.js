@@ -68,8 +68,7 @@ class MainPage extends React.Component {
         const { me } = this.props
         const room = me.username
         setLoading(false)
-        getPopular({ room })
-        getNewItem({ room })
+        Promise.all([getPopular({ room }), getNewItem({ room })])
       },
       () => {
         setLoading(false)

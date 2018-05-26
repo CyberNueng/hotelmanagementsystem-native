@@ -1,10 +1,13 @@
-import { ActivityIndicator, BackHandler, Dimensions, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, BackHandler, Dimensions, KeyboardAvoidingView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Avatar, ListItem, SearchBar } from 'react-native-elements'
 
 import CommonActions from '../common/actions';
+import Fuse from 'fuse.js'
+import ItemActions from '../modules/item/actions';
+import ItemSelectors from '../modules/item/selectors';
 import LoginActions from '../modules/login/actions';
 import LoginSelectors from '../modules/login/selectors';
 import React from 'react';
-import { SearchBar } from 'react-native-elements'
 import _ from 'lodash'
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -29,15 +32,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: 3,
   },
+  listcontain: {
+    height: (height-74)*0.2
+  },
+  titleitem: {
+    fontSize: height*0.03,
+    fontWeight: '300',
+    color: '#000'
+  }
 });
 
-const itemListFuseOptions = {
+const allItemFuseOptions = {
   threshold: 0.3,
   location: 0,
   distance: 100,
   maxPatternLength: 25,
   minMatchCharLength: 1,
-  keys: ['id', 'itemName']
+  keys: ['itemName', 'itemDescription']
 }
 
 class SearchPage extends React.Component {
@@ -45,20 +56,17 @@ class SearchPage extends React.Component {
     searchText: ''
   }
 
-  onSearch = searchText => this.setState({ searchText })
-  
-  onChange = e => {
-    if (this.props.onChange) return this.props.onChange(e)
+  onChange = text => {
+    if (this.props.onChange) return this.props.onChange(text)
     if (this.props.onChange === null) return () => null
-    e.persist()
-    return _.debounce(e => this.setState({ searchText: e.target.value }), 500)(e)
+    return _.debounce(text => this.setState({ searchText: text }), 500)(text)
   }
 
   filter = allItem => {
     if (this.props.filter) return this.props.filter(allItem)
     if (this.props.filter === null) return () => null
     const fuseAllItem = new Fuse(allItem, allItemFuseOptions)
-    const filterList = this.state.searchText !== '' ? fuseAllItem.search(this.state.searchText) : allItem
+    const filterList = this.state.searchText !== '' ? fuseAllItem.search(this.state.searchText) : []
     return filterList
   }
   componentWillMount() {
@@ -71,7 +79,7 @@ class SearchPage extends React.Component {
         const { me } = this.props
         const room = me.username
         setLoading(false)
-        getAllItem({ room })
+        Promise.all([getAllItem({ room })])
       },
       () => {
         setLoading(false)
@@ -104,7 +112,7 @@ class SearchPage extends React.Component {
           <Text>Check Authorized...</Text>
         </View>
       )
-    } 
+    }
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
         <SearchBar
@@ -114,7 +122,39 @@ class SearchPage extends React.Component {
           inputContainerStyle={{marginTop: height*0.005}}
           autoFocus
           ref={search => this.search = search}
+          onChangeText={text => this.onChange(text)}
         />
+        <ScrollView>
+        {
+          filterList ? filterList.map((l, i) => (
+            <ListItem
+              scaleProps={{
+                friction: 90,
+                tension: 100,
+                activeScale: 0.95,
+              }}
+              containerStyle={styles.listcontain}
+              key={i}
+              leftAvatar={
+                <Avatar
+                  rounded={false}
+                  source= {{ uri: l.image }}
+                  containerStyle= {{height: height*0.12, width: height*0.15, backgroundColor: '#fff'}}
+                  avatarStyle= {{height: height*0.12, width: height*0.15}}
+                />
+              }
+              title={l.itemName}
+              titleStyle={styles.titleitem}
+              subtitle={l.priceType == 'U' ? `${l.reqPrice} / ${l.amountType}`:`${l.reqPrice} / day`}
+              rightIcon={{size: height*0.1, name: 'chevron-right'}}
+              bottomDivider
+            />
+          )) : (
+            <View>
+            </View>
+          )
+        }
+        </ScrollView>
       </KeyboardAvoidingView>
     )
   }
@@ -126,13 +166,11 @@ SearchPage.navigationOptions = {
 
 const mapStateToProps = state => ({
   me: LoginSelectors.me(state),
-  loginStatus: LoginSelectors.loginStatus(state),
   allItem: ItemSelectors.allItem(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   getMe: () => dispatch(LoginActions.me()),
-  login: ({ username, password }) => dispatch(LoginActions.login({ username, password })),
   setLoading: status => dispatch(CommonActions.isLoading(status)),
   getAllItem: ({ room }) => dispatch(ItemActions.getAllItem({ room })),
 });

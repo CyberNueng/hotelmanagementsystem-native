@@ -85,7 +85,7 @@ class Recommend extends React.Component {
 
   render() {
     const { navigate } = this.props
-    const { popular } = this.state
+    const { popular, newItem } = this.state
     return (
       <View>
         <Text style={styles.texthead}>Recommended</Text>

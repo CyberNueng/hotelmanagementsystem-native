@@ -99,6 +99,7 @@ class ItemPage extends React.Component {
       reqPrice: props.navigation.state.params.itemInfo.reqPrice,
       btnText: 'TAKE',
       priceType: props.navigation.state.params.itemInfo.priceType,
+      amountLeft: props.navigation.state.params.itemInfo.amountLeft,
     }
   }
 
@@ -149,7 +150,7 @@ class ItemPage extends React.Component {
         </View>
       )
     }
-    const { priceTypeText, reqPrice, itemName, image, itemDescription, btnText } = this.state
+    const { priceTypeText, reqPrice, amountLeft, itemName, image, itemDescription, btnText } = this.state
     return (
       <View>
         <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
@@ -173,15 +174,16 @@ class ItemPage extends React.Component {
               <Text style={styles.itemcurrency}>{priceTypeText}</Text>
             </View>
             <View style={styles.middledetail}>
-              <Text style={{paddingTop: height*0.025, fontSize: height*0.025}}>amount</Text>
+              <Text style={{fontSize: height*0.025}}>amount</Text>
               <Stepper
-                style={{ width: '100%', height: '100%', paddingBottom: height*0.025 }}
+                style={{ width: '100%', height: '100%'}}
                 showNumber
-                max={100}
+                max={amountLeft}
                 min={1}
                 value={this.state.val}
                 onChange={this.onChange}
               />
+              <Text style={{fontSize: height*0.025}}>{amountLeft != 0 ? `have: ${amountLeft}` : 'out of stock'}</Text>
             </View>
             <View style={styles.rightdetail}>
               <Button
@@ -190,6 +192,7 @@ class ItemPage extends React.Component {
                 onPress={this.requestHandle}
                 containerStyle={{ justifyContent: 'center' }}
                 buttonStyle={{ height: '80%', width: width*0.21}}
+                disabled={amountLeft == 0 ? true : false}
               />
             </View>
           </View>
