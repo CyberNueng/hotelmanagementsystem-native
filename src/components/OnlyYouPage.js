@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class HistoryPage extends React.Component {
+class OnlyYouPage extends React.Component {
   componentWillMount() {
     // fetch user info then set serverSide to false
     BackHandler.addEventListener('hardwareBackPress', this.setBack);
@@ -71,14 +71,14 @@ class HistoryPage extends React.Component {
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
         <View style={styles.tabBar}> 
-          <TabMenu navigate={navigation.navigate} page='History'/>
+          <TabMenu navigate={navigation.navigate} page='OnlyYou'/>
         </View>
       </KeyboardAvoidingView>
     )
   }
 }
 
-HistoryPage.navigationOptions = {
+OnlyYouPage.navigationOptions = {
   header: null,
 };
 
@@ -91,4 +91,4 @@ const mapDispatchToProps = dispatch => ({
   setLoading: status => dispatch(CommonActions.isLoading(status)),
 });
 
-export default compose(connect(mapStateToProps, mapDispatchToProps))(HistoryPage);
+export default compose(connect(mapStateToProps, mapDispatchToProps))(OnlyYouPage);

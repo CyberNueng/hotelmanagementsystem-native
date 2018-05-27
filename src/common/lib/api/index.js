@@ -45,4 +45,12 @@ export default {
   repair({ username, itemID }) {
     return api.put(`inventory/repair/${itemID}`, { username, ItemID });
   },
+
+  getGuesthistory({ room }) {
+    return api.get(`inventory/guesthistory?room=${room}`)
+  },
+
+  cancelRequest({ reqID, username }) {
+    return api.put(`/inventory/cancelrequest/${reqID}`, { reqID, username })
+  },
 }

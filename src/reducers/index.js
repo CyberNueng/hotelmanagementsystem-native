@@ -5,7 +5,7 @@ import itemReducers from '../modules/item/reducers'
 import loginReducers from '../modules/login/reducers'
 
 // Start with two routes: The Main screen, with the Login screen on top.
-const firstAction = AppNavigator.router.getActionForPathAndParams('Main');
+const firstAction = AppNavigator.router.getActionForPathAndParams('Home');
 //const tempNavState = AppNavigator.router.getStateForAction(firstAction);
 //const secondAction = AppNavigator.router.getActionForPathAndParams('Login');
 const initialNavState = AppNavigator.router.getStateForAction(

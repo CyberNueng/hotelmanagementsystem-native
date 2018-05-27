@@ -4,6 +4,7 @@ const selectors = {
   recommend: state => state.item.recommend.data.results,
   newItem: state => state.item.newItem.data.results,
   allItem: state => state.item.allItem.data,
+  guesthistory: state => state.item.guesthistory.data,
 }
 
 export default selectors

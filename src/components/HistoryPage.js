@@ -33,13 +33,14 @@ class HistoryPage extends React.Component {
   componentWillMount() {
     // fetch user info then set serverSide to false
     BackHandler.addEventListener('hardwareBackPress', this.setBack);
-    const { setLoading, getMe, navigation } = this.props;
+    const { setLoading, getMe, navigation, getGuesthistory } = this.props;
     setLoading(true)
     getMe().then(
       () => {
         const { me } = this.props
         const room = me.username
         setLoading(false)
+        Promise.all([getGuesthistory({ room })])
       },
       () => {
         setLoading(false)
@@ -59,12 +60,20 @@ class HistoryPage extends React.Component {
   }
 
   render() {
-    const { me, navigation } = this.props;
+    const { me, navigation, guesthistory } = this.props;
     if (!me) {
       return (
         <View style={styles.authen}>
           <ActivityIndicator size="large" color="#0000ff" />
           <Text>Check Authorized...</Text>
+        </View>
+      )
+    }
+    else if (!(guesthistory)) {
+      return (
+        <View style={styles.authen}>
+          <ActivityIndicator size="large" color="red" />
+          <Text>Loading...</Text>
         </View>
       )
     }
@@ -84,11 +93,13 @@ HistoryPage.navigationOptions = {
 
 const mapStateToProps = state => ({
   me: LoginSelectors.me(state),
+  guesthistory: ItemSelectors.guesthistory(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   getMe: () => dispatch(LoginActions.me()),
   setLoading: status => dispatch(CommonActions.isLoading(status)),
+  getGuesthistory: ({ room }) => dispatch(ItemActions.getGuesthistory({ room })),
 });
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(HistoryPage);

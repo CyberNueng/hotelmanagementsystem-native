@@ -138,6 +138,7 @@ class MainPage extends React.Component {
                   raised
                   containerStyle={{backgroundColor: '#999'}}
                   size={width*0.07}
+                  onPress={() => navigation.navigate('Category', {})}
                 />
                 <Text style={styles.texticon}>Category</Text>
               </View>

@@ -77,7 +77,7 @@ class LoginPage extends React.Component {
     const { roomnameErr, passwordErr } = this.state;
     if(loginStatus){
       setTimeout(() => {
-        navigation.navigate('Main', {})
+        navigation.navigate('Home', {})
       }, 2000);
     }
     return (

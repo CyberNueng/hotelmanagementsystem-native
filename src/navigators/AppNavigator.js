@@ -1,8 +1,12 @@
 import { StackNavigator, addNavigationHelpers } from 'react-navigation';
 
+import CategoryPage from '../components/CategoryPage';
+import HistoryPage from '../components/HistoryPage'
+import InfoPage from '../components/InfoPage';
 import ItemPage from '../components/ItemPage';
 import LoginPage from '../components/LoginPage';
 import MainPage from '../components/MainPage';
+import OnlyYouPage from '../components/OnlyYouPage';
 import PropTypes from 'prop-types';
 import QRReadPage from '../components/QRReadPage';
 import React from 'react';
@@ -11,11 +15,15 @@ import { addListener } from '../utils/redux';
 import { connect } from 'react-redux';
 
 export const AppNavigator = StackNavigator({
-  Main: { screen: MainPage },
+  Home: { screen: MainPage },
   Login: { screen: LoginPage },
   Search: { screen: SearchPage },
   QR: { screen: QRReadPage },
-  Item: { screen: ItemPage }
+  Item: { screen: ItemPage },
+  History: { screen: HistoryPage },
+  Info: { screen: InfoPage },
+  Category: { screen: CategoryPage },
+  OnlyYou: { screen: OnlyYouPage },
 });
 
 class AppWithNavigationState extends React.Component {

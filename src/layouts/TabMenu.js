@@ -58,7 +58,7 @@ class TabMenu extends React.Component{
                     title={category}
                     key={category}
                     selected={this.state.selectedTab === category}
-                    onPress={() => navigate(home,{})}
+                    onPress={() => navigate(category,{})}
                 >
                 {this.renderContent({category})}
                 </TabBar.Item>
@@ -67,8 +67,8 @@ class TabMenu extends React.Component{
                     selectedIcon={require('../static/img/historys.png')}
                     title={history}
                     key={history}
-                    selected={this.state.selectedTab === 'history'}
-                    onPress={() => navigate(home,{})}
+                    selected={this.state.selectedTab === history}
+                    onPress={() => navigate(history,{})}
                 >
                 {this.renderContent({history})}
                 </TabBar.Item>
@@ -77,8 +77,8 @@ class TabMenu extends React.Component{
                     selectedIcon={require('../static/img/infos.png')}
                     title={info}
                     key={info}
-                    selected={this.state.selectedTab === 'info'}
-                    onPress={() => navigate(home,{})}
+                    selected={this.state.selectedTab === info}
+                    onPress={() => navigate(info,{})}
                 >
                 {this.renderContent({info})}
                 </TabBar.Item>
