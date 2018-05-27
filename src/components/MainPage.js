@@ -61,14 +61,14 @@ class MainPage extends React.Component {
   componentWillMount() {
     // fetch user info then set serverSide to false
     Keyboard.dismiss();
-    const { setLoading, getMe, navigation, getPopular, getNewItem } = this.props;
+    const { setLoading, getMe, navigation, getPopular, getNewItem, getRecommend } = this.props;
     setLoading(true)
     getMe().then(
       () => {
         const { me } = this.props
         const room = me.username
         setLoading(false)
-        Promise.all([getPopular({ room }), getNewItem({ room })])
+        Promise.all([getPopular({ room }), getNewItem({ room }), getRecommend({ room })])
       },
       () => {
         setLoading(false)
@@ -78,7 +78,7 @@ class MainPage extends React.Component {
   }
 
   render() {
-    const { me, navigation, popularItem, newItem } = this.props;
+    const { me, navigation, popularItem, recommend, newItem } = this.props;
     if (!me) {
       return (
         <View style={styles.authen}>
@@ -87,7 +87,7 @@ class MainPage extends React.Component {
         </View>
       )
     }
-    else if (!(popularItem && newItem)) {
+    else if (!(popularItem && newItem && recommend)) {
       return (
         <View style={styles.authen}>
           <ActivityIndicator size="large" color="red" />
@@ -106,7 +106,7 @@ class MainPage extends React.Component {
         />
         <View style={styles.scroll}>
           <ScrollView>
-            <MainCarousel popular={popularItem} navigate={navigation.navigate} />
+            <MainCarousel newItem={newItem} navigate={navigation.navigate} />
             <View style={styles.iconrow}>
               <View style={styles.iconitem}>
                 <Icon
@@ -154,7 +154,7 @@ class MainPage extends React.Component {
                 <Text style={styles.texticon}>QR-Scan</Text>
               </View>
             </View>
-            <Recommend popular={popularItem} newItem={newItem} navigate={navigation.navigate}/>
+            <Recommend popular={popularItem} recommend={recommend} navigate={navigation.navigate}/>
           </ScrollView>
         </View>
         <View style={styles.tabBar}> 
@@ -173,6 +173,7 @@ const mapStateToProps = state => ({
   me: LoginSelectors.me(state),
   popularItem: ItemSelectors.popularItem(state),
   newItem: ItemSelectors.newItem(state),
+  recommend: ItemSelectors.recommend(state),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -180,6 +181,7 @@ const mapDispatchToProps = dispatch => ({
   setLoading: status => dispatch(CommonActions.isLoading(status)),
   getPopular: ({ room }) => dispatch(ItemActions.getPopular({ room })),
   getNewItem: ({ room }) => dispatch(ItemActions.getNewItem({ room })),
+  getRecommend: ({ room }) => dispatch(ItemActions.getRecommend({ room })),
 });
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(MainPage);

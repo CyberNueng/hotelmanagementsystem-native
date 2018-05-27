@@ -4,16 +4,20 @@ import createApiAction from '../../common/lib/api/createAction'
 
 const itemInfoApiAction = createApiAction(constants.ITEM_INFO, { setLoading: true })
 const popularApiAction = createApiAction(constants.POPULAR, { setLoading: true })
+const recommendApiAction = createApiAction(constants.RECOMMEND, { setLoading: true })
 const requestApiAction = createApiAction(constants.REQUEST, { setLoading: true })
 const newItemApiAction = createApiAction(constants.NEW_ITEM, { setLoading: true })
 const allItemApiAction = createApiAction(constants.ALL_ITEM, { setLoading: true })
+const repairApiAction = createApiAction(constants.REPAIR, { setLoading: true })
 
 const actions = {
   getItemInfo: ({ itemID }) => itemInfoApiAction.fetch(Api.getItemInfo, { itemID }),
   getPopular: ({ room }) => popularApiAction.fetch(Api.getPopular, { room }),
+  getRecommend: ({ room }) => recommendApiAction.fetch(Api.getRecommend, { room }),
   getNewItem: ({ room }) => newItemApiAction.fetch(Api.getNewItem, { room }),
   getAllItem: ({ room }) => allItemApiAction.fetch(Api.getAllItem, { room }),
-  requestItem: ({ username, itemID, amount }) => requestApiAction.request(Api.requestItem, { username, itemID, amount })
+  requestItem: ({ username, itemID, amount }) => requestApiAction.request(Api.requestItem, { username, itemID, amount }),
+  repair: ({ username, itemID }) => repairApiAction.request(Api.repair, { username, itemID })
 }
 
 export default actions

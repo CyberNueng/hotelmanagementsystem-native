@@ -20,7 +20,7 @@ class MainCarousel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [props.popular[0], props.popular[1], props.popular[2], props.popular[3], props.popular[4]],
+      data: [props.newItem[0], props.newItem[1], props.newItem[2], props.newItem[3], props.newItem[4]],
     };
   }
 

@@ -19,11 +19,15 @@ export default {
   },
 
   getPopular({ room })  {
-    return api.get(`inventory/popular?limit=11&room=${room}`)
+    return api.get(`inventory/popular?limit=6&room=${room}`)
+  },
+
+  getRecommend({ room })  {
+    return api.get(`inventory/recommend?limit=6&room=${room}`)
   },
 
   getNewItem({ room }) {
-    return api.get(`inventory/newitem?limit=6&room=${room}`)
+    return api.get(`inventory/newitem?limit=5&room=${room}`)
   },
 
   getAllItem({ room }) {
@@ -37,7 +41,7 @@ export default {
   requestItem({ username, itemID, amount }) {
     return api.put(`inventory/request/${itemID}`, { username, itemID, amount });
   },
-  //uncomplete
+  
   repair({ username, itemID }) {
     return api.put(`inventory/repair/${itemID}`, { username, ItemID });
   },

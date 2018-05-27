@@ -91,7 +91,28 @@ class QRCodePage extends React.Component {
     requestItem({ username, itemID, amount }).then(
       () => {
         setTimeout(() => {
-          alert('Done', 'This request has sent', [
+          alert('Done', 'Request has been sent', [
+            { text: 'Ok'},
+          ])
+        }, 500);
+      },
+      (err) => {
+        setTimeout(() => {
+          alert('Error!!', 'Please Try Again Later', [
+            { text: 'Ok'},
+          ])
+        }, 500);
+      }
+    )
+  }
+
+  repair = (itemID) => {
+    const { repair } = this.props
+    const username = this.props.me.username
+    repair({ username, itemID }).then(
+      () => {
+        setTimeout(() => {
+          alert('Done', 'Repair request has been sent', [
             { text: 'Ok'},
           ])
         }, 500);
@@ -217,6 +238,7 @@ const mapDispatchToProps = dispatch => ({
   setLoading: status => dispatch(CommonActions.isLoading(status)),
   getItemInfo: ({ itemID }) => dispatch(ItemActions.getItemInfo({ itemID })),
   requestItem: ({ username, itemID, amount }) => dispatch(ItemActions.requestItem({ username, itemID, amount })),
+  repair: ({ username, itemID, amount }) => dispatch(ItemActions.repair({ username, itemID })),
 });
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(QRCodePage);

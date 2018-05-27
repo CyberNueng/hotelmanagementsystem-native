@@ -52,8 +52,11 @@ const allItemFuseOptions = {
 }
 
 class SearchPage extends React.Component {
-  state = {
-    searchText: ''
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchText: props.recommendtxt ? props.recommendtxt:''
+    }
   }
 
   onChange = text => {

@@ -66,153 +66,161 @@ class Recommend extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      popular: [props.popular[5],props.popular[6],props.popular[7],props.popular[8],props.popular[9],props.popular[10]],
-      newItem: [props.newItem[0],props.newItem[1],props.newItem[2],props.newItem[3],props.newItem[4],props.newItem[5]]
+      popular: [props.popular[0],props.popular[1],props.popular[2],props.popular[3],props.popular[4],props.popular[5]],
+      recommend: [props.recommend[0],props.recommend[1],props.recommend[2],props.recommend[3],props.recommend[4],props.recommend[5]]
     }
   }
 
   componentDidMount() {
-    const { popular } = this.state
+    const { popular, recommend } = this.state
     for(var i in popular) {
-      switch(popular[i].priceType) {
+      switch(popular[i] ? popular[i].priceType : '') {
         case 'D':
           popular[i].priceType = '/ day'
         case 'U':
           popular[i].priceType = '/ ' + popular[i].amountType
       }
     }
+    for(var i in recommend) {
+      switch(recommend[i] ? recommend[i].priceType : '') {
+        case 'D':
+          recommend[i].priceType = '/ day'
+        case 'U':
+          recommend[i].priceType = '/ ' + recommend[i].amountType
+      }
+    }
   }
 
   render() {
     const { navigate } = this.props
-    const { popular, newItem } = this.state
+    const { popular, recommend } = this.state
     return (
       <View>
         <Text style={styles.texthead}>Recommended</Text>
         <View style={styles.container}>
           <View style={styles.recommendbox}>
             <View style={styles.inrow}>
-              <TouchableOpacity style={styles.touch} onPress={()=>navigate('Item', {itemInfo: popular[0]})}>
+              <TouchableOpacity style={styles.touch} onPress={()=>{recommend[0] ? navigate('Item', {itemInfo: recommend[0]}) : false}}>
                 <View style={styles.incolumn}>
                   <View style={styles.textzone}>
-                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{popular[0].itemName}</Text>
-                    <Text style={styles.pricetext}>{`Price:\n${popular[0].reqPrice} ${popular[0].priceType}`}</Text>
+                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{recommend[0] ? recommend[0].itemName : ''}</Text>
+                    <Text style={styles.pricetext}>{recommend[0] ? `Price:\n${recommend[0].reqPrice} ${recommend[0].priceType}`: ''}</Text>
                   </View>
-                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: popular[0].image}} />
+                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: recommend[0] ? recommend[0].image : 'none'}} />
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.touch} onPress={()=>navigate('Item', {itemInfo: popular[1]})}>
+              <TouchableOpacity style={styles.touch} onPress={()=>{recommend[1] ? navigate('Item', {itemInfo: recommend[1]}) : false}}>
                 <View style={styles.incolumn}>
                   <View style={styles.textzone}>
-                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{popular[1].itemName}</Text>
-                    <Text style={styles.pricetext}>{`Price:\n${popular[1].reqPrice} ${popular[1].priceType}`}</Text>
+                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{recommend[1] ? recommend[1].itemName : ''}</Text>
+                    <Text style={styles.pricetext}>{recommend[1] ? `Price:\n${recommend[1].reqPrice} ${recommend[1].priceType}`: ''}</Text>
                   </View>
-                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: popular[1].image}} />
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.inrow}>
-              <TouchableOpacity style={styles.touch} onPress={()=>navigate('Item', {itemInfo: popular[2]})}>
-                <View style={styles.incolumn}>
-                  <View style={styles.textzone}>
-                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{popular[2].itemName}</Text>
-                    <Text style={styles.pricetext}>{`Price:\n${popular[2].reqPrice} ${popular[2].priceType}`}</Text>
-                  </View>
-                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: popular[2].image}} />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.touch} onPress={()=>navigate('Item', {itemInfo: popular[3]})}>
-                <View style={styles.incolumn}>
-                  <View style={styles.textzone}>
-                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{popular[3].itemName}</Text>
-                    <Text style={styles.pricetext}>{`Price:\n${popular[3].reqPrice} ${popular[3].priceType}`}</Text>
-                  </View>
-                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: popular[3].image}} />
+                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: recommend[1] ? recommend[1].image : 'none'}} />
                 </View>
               </TouchableOpacity>
             </View>
             <View style={styles.inrow}>
-              <TouchableOpacity style={styles.touch} onPress={()=>navigate('Item', {itemInfo: popular[4]})}>
+            <TouchableOpacity style={styles.touch} onPress={()=>{recommend[2] ? navigate('Item', {itemInfo: recommend[2]}) : false}}>
                 <View style={styles.incolumn}>
                   <View style={styles.textzone}>
-                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{popular[4].itemName}</Text>
-                    <Text style={styles.pricetext}>{`Price:\n${popular[4].reqPrice} ${popular[4].priceType}`}</Text>
+                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{recommend[2] ? recommend[2].itemName : ''}</Text>
+                    <Text style={styles.pricetext}>{recommend[2] ? `Price:\n${recommend[2].reqPrice} ${recommend[2].priceType}`: ''}</Text>
                   </View>
-                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: popular[4].image}} />
+                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: recommend[2] ? recommend[2].image : 'none'}} />
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.touch} onPress={()=>navigate('Item', {itemInfo: popular[5]})}>
+              <TouchableOpacity style={styles.touch} onPress={()=>{recommend[3] ? navigate('Item', {itemInfo: recommend[3]}) : false}}>
                 <View style={styles.incolumn}>
                   <View style={styles.textzone}>
-                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{popular[5].itemName}</Text>
-                    <Text style={styles.pricetext}>{`Price:\n${popular[5].reqPrice} ${popular[5].priceType}`}</Text>
+                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{recommend[3] ? recommend[3].itemName : ''}</Text>
+                    <Text style={styles.pricetext}>{recommend[3] ? `Price:\n${recommend[3].reqPrice} ${recommend[3].priceType}`: ''}</Text>
                   </View>
-                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: popular[5].image}} />
+                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: recommend[3] ? recommend[3].image : 'none'}} />
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.inrow}>
+            <TouchableOpacity style={styles.touch} onPress={()=>{recommend[4] ? navigate('Item', {itemInfo: recommend[4]}) : false}}>
+                <View style={styles.incolumn}>
+                  <View style={styles.textzone}>
+                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{recommend[4] ? recommend[4].itemName : ''}</Text>
+                    <Text style={styles.pricetext}>{recommend[4] ? `Price:\n${recommend[4].reqPrice} ${recommend[4].priceType}`: ''}</Text>
+                  </View>
+                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: recommend[4] ? recommend[4].image : 'none'}} />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.touch} onPress={()=>{recommend[5] ? navigate('Item', {itemInfo: recommend[5]}) : false}}>
+                <View style={styles.incolumn}>
+                  <View style={styles.textzone}>
+                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{recommend[5] ? recommend[5].itemName : ''}</Text>
+                    <Text style={styles.pricetext}>{recommend[5] ? `Price:\n${recommend[5].reqPrice} ${recommend[5].priceType}`: ''}</Text>
+                  </View>
+                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: recommend[5] ? recommend[5].image : 'none'}} />
                 </View>
               </TouchableOpacity>
             </View>
           </View>
         </View>
-        <Text style={styles.texthead}>New</Text>
+        <Text style={styles.texthead}>Popular</Text>
         <View style={styles.container}>
-        <View style={styles.recommendbox}>
+          <View style={styles.recommendbox}>
             <View style={styles.inrow}>
-              <TouchableOpacity style={styles.touch} onPress={()=>navigate('Item', {itemInfo: newItem[0]})}>
+              <TouchableOpacity style={styles.touch} onPress={()=>{popular[0] ? navigate('Item', {itemInfo: popular[0]}) : false}}>
                 <View style={styles.incolumn}>
                   <View style={styles.textzone}>
-                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{newItem[0].itemName}</Text>
-                    <Text style={styles.pricetext}>{`Price:\n${newItem[0].reqPrice} ${newItem[0].priceType}`}</Text>
+                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{popular[0] ? popular[0].itemName : ''}</Text>
+                    <Text style={styles.pricetext}>{popular[0] ? `Price:\n${popular[0].reqPrice} ${popular[0].priceType}`: ''}</Text>
                   </View>
-                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: newItem[0].image}} />
+                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: popular[0] ? popular[0].image : 'none'}} />
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.touch} onPress={()=>navigate('Item', {itemInfo: newItem[1]})}>
+              <TouchableOpacity style={styles.touch} onPress={()=>{popular[1] ? navigate('Item', {itemInfo: popular[1]}) : false}}>
                 <View style={styles.incolumn}>
                   <View style={styles.textzone}>
-                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{newItem[1].itemName}</Text>
-                    <Text style={styles.pricetext}>{`Price:\n${newItem[1].reqPrice} ${newItem[1].priceType}`}</Text>
+                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{popular[1] ? popular[1].itemName : ''}</Text>
+                    <Text style={styles.pricetext}>{popular[1] ? `Price:\n${popular[1].reqPrice} ${popular[1].priceType}`: ''}</Text>
                   </View>
-                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: newItem[1].image}} />
+                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: popular[1] ? popular[1].image : 'none'}} />
                 </View>
               </TouchableOpacity>
             </View>
             <View style={styles.inrow}>
-              <TouchableOpacity style={styles.touch} onPress={()=>navigate('Item', {itemInfo: newItem[2]})}>
+            <TouchableOpacity style={styles.touch} onPress={()=>{popular[2] ? navigate('Item', {itemInfo: popular[2]}) : false}}>
                 <View style={styles.incolumn}>
                   <View style={styles.textzone}>
-                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{newItem[2].itemName}</Text>
-                    <Text style={styles.pricetext}>{`Price:\n${newItem[2].reqPrice} ${newItem[2].priceType}`}</Text>
+                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{popular[2] ? popular[2].itemName : ''}</Text>
+                    <Text style={styles.pricetext}>{popular[2] ? `Price:\n${popular[2].reqPrice} ${popular[2].priceType}`: ''}</Text>
                   </View>
-                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: newItem[2].image}} />
+                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: popular[2] ? popular[2].image : 'none'}} />
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.touch} onPress={()=>navigate('Item', {itemInfo: newItem[3]})}>
+              <TouchableOpacity style={styles.touch} onPress={()=>{popular[3] ? navigate('Item', {itemInfo: popular[3]}) : false}}>
                 <View style={styles.incolumn}>
                   <View style={styles.textzone}>
-                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{newItem[3].itemName}</Text>
-                    <Text style={styles.pricetext}>{`Price:\n${newItem[3].reqPrice} ${newItem[3].priceType}`}</Text>
+                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{popular[3] ? popular[3].itemName : ''}</Text>
+                    <Text style={styles.pricetext}>{popular[3] ? `Price:\n${popular[3].reqPrice} ${popular[3].priceType}`: ''}</Text>
                   </View>
-                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: newItem[3].image}} />
+                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: popular[3] ? popular[3].image : 'none'}} />
                 </View>
               </TouchableOpacity>
             </View>
             <View style={styles.inrow}>
-              <TouchableOpacity style={styles.touch} onPress={()=>navigate('Item', {itemInfo: newItem[4]})}>
+            <TouchableOpacity style={styles.touch} onPress={()=>{popular[4] ? navigate('Item', {itemInfo: popular[4]}) : false}}>
                 <View style={styles.incolumn}>
                   <View style={styles.textzone}>
-                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{newItem[4].itemName}</Text>
-                    <Text style={styles.pricetext}>{`Price:\n${newItem[4].reqPrice} ${newItem[4].priceType}`}</Text>
+                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{popular[4] ? popular[4].itemName : ''}</Text>
+                    <Text style={styles.pricetext}>{popular[4] ? `Price:\n${popular[4].reqPrice} ${popular[4].priceType}`: ''}</Text>
                   </View>
-                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: newItem[4].image}} />
+                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: popular[4] ? popular[4].image : 'none'}} />
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.touch} onPress={()=>navigate('Item', {itemInfo: newItem[5]})}>
+              <TouchableOpacity style={styles.touch} onPress={()=>{popular[5] ? navigate('Item', {itemInfo: popular[5]}) : false}}>
                 <View style={styles.incolumn}>
                   <View style={styles.textzone}>
-                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{newItem[5].itemName}</Text>
-                    <Text style={styles.pricetext}>{`Price:\n${newItem[5].reqPrice} ${newItem[5].priceType}`}</Text>
+                    <Text style={styles.itemtext} numberOfLines={1} ellipsizeMode={'tail'}>{popular[5] ? popular[5].itemName : ''}</Text>
+                    <Text style={styles.pricetext}>{popular[5] ? `Price:\n${popular[5].reqPrice} ${popular[5].priceType}`: ''}</Text>
                   </View>
-                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: newItem[5].image}} />
+                  <Image style={styles.imagezone} resizeMode="cover" resizeMode="contain" source={{uri: popular[5] ? popular[5].image : 'none'}} />
                 </View>
               </TouchableOpacity>
             </View>
