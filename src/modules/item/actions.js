@@ -10,6 +10,8 @@ const newItemApiAction = createApiAction(constants.NEW_ITEM, { setLoading: true 
 const allItemApiAction = createApiAction(constants.ALL_ITEM, { setLoading: true })
 const repairApiAction = createApiAction(constants.REPAIR, { setLoading: true })
 const guesthistoryApiAction = createApiAction(constants.GUEST_HISTORY, { setLoading: true })
+const cancelRequestApiAction = createApiAction(constants.CANCEL_REQUEST, { setLoading: true })
+const onlyYouApiAction = createApiAction(constants.ONLY_YOU, { setLoading: true })
 
 const actions = {
   getItemInfo: ({ itemID }) => itemInfoApiAction.fetch(Api.getItemInfo, { itemID }),
@@ -19,8 +21,9 @@ const actions = {
   getAllItem: ({ room }) => allItemApiAction.fetch(Api.getAllItem, { room }),
   requestItem: ({ username, itemID, amount }) => requestApiAction.request(Api.requestItem, { username, itemID, amount }),
   repair: ({ username, itemID }) => repairApiAction.request(Api.repair, { username, itemID }),
-  getGuesthistory: ({ room }) => newItemApiAction.fetch(Api.getGuesthistory, { room }),
+  getGuesthistory: ({ room }) => guesthistoryApiAction.fetch(Api.getGuesthistory, { room }),
   cancelRequest: ({ reqID, username }) => cancelRequestApiAction.request(Api.cancelRequest, { reqID, username }),
+  getOnlyYou: ({ room }) => onlyYouApiAction.fetch(Api.getOnlyYou, { room }),
 }
 
 export default actions

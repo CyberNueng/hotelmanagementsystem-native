@@ -43,7 +43,7 @@ export default {
   },
   
   repair({ username, itemID }) {
-    return api.put(`inventory/repair/${itemID}`, { username, ItemID });
+    return api.put(`inventory/repair/${itemID}`, { username, itemID });
   },
 
   getGuesthistory({ room }) {

@@ -55,7 +55,7 @@ class SearchPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchText: props.recommendtxt ? props.recommendtxt:''
+      searchText: props.navigation.state.params.recommendtxt ? props.navigation.state.params.recommendtxt:''
     }
   }
 
@@ -106,7 +106,7 @@ class SearchPage extends React.Component {
   }
 
   render() {
-    const { me, allItem } = this.props;
+    const { me, allItem, navigation } = this.props;
     const filterList = this.filter(allItem)
     if (!me) {
       return (
@@ -151,6 +151,7 @@ class SearchPage extends React.Component {
               subtitle={l.priceType == 'U' ? `${l.reqPrice} / ${l.amountType}`:`${l.reqPrice} / day`}
               rightIcon={{size: height*0.1, name: 'chevron-right'}}
               bottomDivider
+              onPress={() => navigation.navigate('Item', {itemInfo: l})}
             />
           )) : (
             <View>

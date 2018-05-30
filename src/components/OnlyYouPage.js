@@ -27,19 +27,30 @@ const styles = StyleSheet.create({
     width: width,
     backgroundColor: '#EEE',
   },
+  scroll: {
+    height: height-50,
+    width: width,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inscrollview: {
+    flex: 1,
+    flexDirection: 'row',
+  }
 });
 
 class OnlyYouPage extends React.Component {
   componentWillMount() {
     // fetch user info then set serverSide to false
     BackHandler.addEventListener('hardwareBackPress', this.setBack);
-    const { setLoading, getMe, navigation } = this.props;
+    const { setLoading, getMe, navigation, getOnlyYou } = this.props;
     setLoading(true)
     getMe().then(
       () => {
         const { me } = this.props
         const room = me.username
         setLoading(false)
+        Promise.all([getOnlyYou({ room })])
       },
       () => {
         setLoading(false)
@@ -70,6 +81,16 @@ class OnlyYouPage extends React.Component {
     }
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+      <View style={styles.scroll}>
+        <ScrollView style={styles.inscrollview}>
+        {
+          guesthistory.map((l, i) => (
+            <View>
+            </View>
+          ))
+        }
+        </ScrollView>
+        </View>
         <View style={styles.tabBar}> 
           <TabMenu navigate={navigation.navigate} page='OnlyYou'/>
         </View>
@@ -84,11 +105,13 @@ OnlyYouPage.navigationOptions = {
 
 const mapStateToProps = state => ({
   me: LoginSelectors.me(state),
+  onlyYou: ItemSelectors.onlyYou(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   getMe: () => dispatch(LoginActions.me()),
   setLoading: status => dispatch(CommonActions.isLoading(status)),
+  getOnlyYou: ({ room }) => dispatch(ItemActions.getOnlyYou({ room })),
 });
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(OnlyYouPage);

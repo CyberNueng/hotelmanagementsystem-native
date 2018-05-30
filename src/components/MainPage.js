@@ -115,6 +115,7 @@ class MainPage extends React.Component {
                   color='white'
                   raised
                   containerStyle={{backgroundColor:'red'}}
+                  onPress={() => navigation.navigate('OnlyYou', {})}
                   size={width*0.07}
                 />
                 <Text style={styles.texticon}>Only You</Text>

@@ -1,16 +1,18 @@
 import { ActivityIndicator, BackHandler, Dimensions, Image, Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button, SearchBar, Text } from 'react-native-elements';
+import { Modal, Stepper } from 'antd-mobile'
 
 import CommonActions from '../common/actions';
+import ItemActions from '../modules/item/actions';
 import LoginActions from '../modules/login/actions';
 import LoginSelectors from '../modules/login/selectors';
 import React from 'react';
-import { Stepper } from 'antd-mobile'
 import TabMenu from '../layouts/TabMenu';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 
 const currency = 'Bath'
+const alert = Modal.alert;
 var {height, width} = Dimensions.get('window');
 height = height-24 //-24 on Android Statusbar
 const styles = StyleSheet.create({
@@ -92,6 +94,7 @@ class ItemPage extends React.Component {
     super(props);
     this.state = {
       val: 1,
+      itemID: props.navigation.state.params.itemInfo.id,
       itemName: props.navigation.state.params.itemInfo.itemName,
       image: props.navigation.state.params.itemInfo.image,
       itemType: props.navigation.state.params.itemInfo.itemType,
@@ -108,11 +111,18 @@ class ItemPage extends React.Component {
     Keyboard.dismiss();
     BackHandler.addEventListener('hardwareBackPress', this.setBack);
     const { setLoading, getMe, navigation, me } = this.props;
-    const { priceType } = this.state
+    const { priceType, amountLeft, itemName } = this.state
     setLoading(true)
     getMe().then(
       () => {
         setLoading(false)
+        if(amountLeft == 0) {
+          alert('Out of stock!!', 'Sorry this item is out of stock.', [
+            { text: 'Similar item', onPress: () => navigation.navigate("Search", {recommendtxt: itemName.substr(0,3)}) },
+            { text: 'See detail' },
+            { text: 'Go back', onPress: () => navigation.goBack() },
+          ])
+        }
       },
       () => {
         setLoading(false)
@@ -132,8 +142,35 @@ class ItemPage extends React.Component {
     return true;
   }
 
+  okBtn = () => {
+    const { val, itemID } = this.state
+    const { requestItem } = this.props
+    const username = this.props.me.username
+    amount = val;
+    requestItem({ username, itemID, amount }).then(
+      () => {
+        setTimeout(() => {
+          alert('Done', 'Request has been sent', [
+            { text: 'Ok'},
+          ])
+        }, 500);
+      },
+      (err) => {
+        setTimeout(() => {
+          alert('Error!!', 'Please Try Again Later', [
+            { text: 'Ok'},
+          ])
+        }, 500);
+      }
+    )
+  }
+
   requestHandle = () => {
-    
+    const { val, itemName } = this.state
+    alert('Are you sure', `Request ${val} of ${itemName}`, [
+      { text: 'Cancel'},
+      { text: 'Ok', onPress: () => this.okBtn()},
+    ])
   }
 
   onChange = (val) => {
@@ -180,7 +217,7 @@ class ItemPage extends React.Component {
                 showNumber
                 max={amountLeft}
                 min={1}
-                value={this.state.val}
+                value={amountLeft > 0 ? this.state.val:0}
                 onChange={this.onChange}
               />
               <Text style={{fontSize: height*0.025}}>{amountLeft != 0 ? `have: ${amountLeft}` : 'out of stock'}</Text>
@@ -216,6 +253,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getMe: () => dispatch(LoginActions.me()),
   setLoading: status => dispatch(CommonActions.isLoading(status)),
+  requestItem: ({ username, itemID, amount }) => dispatch(ItemActions.requestItem({ username, itemID, amount })),
 });
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(ItemPage);

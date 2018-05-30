@@ -9,6 +9,7 @@ const reducers = combineReducers({
   newItem: createApiReducer(constants.NEW_ITEM, []),
   allItem: createApiReducer(constants.ALL_ITEM, []),
   guesthistory: createApiReducer(constants.GUEST_HISTORY, []),
+  onlyYou: createApiReducer(constants.ONLY_YOU, []),
 })
 
 export default reducers

@@ -1,6 +1,6 @@
 import { ActivityIndicator, BackHandler, Dimensions, Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, View } from 'react-native';
-import { Col, Row } from 'antd-mobile';
-import { Icon, SearchBar, Text } from 'react-native-elements';
+import { Avatar, ListItem, SearchBar, Text } from 'react-native-elements';
+import { Col, Modal, Row } from 'antd-mobile';
 
 import CommonActions from '../common/actions';
 import ItemActions from '../modules/item/actions';
@@ -12,7 +12,10 @@ import TabMenu from '../layouts/TabMenu'
 import { bold } from 'ansi-colors';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
+const alert = Modal.alert;
+const currency = 'Bath'
 var {height, width} = Dimensions.get('window');
 height = height-24 //-24 on Android Statusbar
 const styles = StyleSheet.create({
@@ -26,6 +29,21 @@ const styles = StyleSheet.create({
     height: height,
     width: width,
     backgroundColor: '#EEE',
+  },
+  listcontain: {
+    height: height*0.16,
+    width: width
+  },
+  titleitem: {
+    fontSize: height*0.025,
+    fontWeight: '300',
+    color: '#000'
+  },
+  scroll: {
+    height: height-50,
+    width: width,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
@@ -59,6 +77,41 @@ class HistoryPage extends React.Component {
     return true;
   }
 
+  clickAction = (status,reqID) => {
+    const cancelBtn = this.cancelBtn
+    alert(`Cancel request ${reqID}?`, `This request status is ${status=='Q' ? 'Request':'To-Do'}.`, [
+      { text: 'No'},
+      { text: 'Yes', onPress: () => {this.cancelBtn(reqID)}},
+    ])
+  }
+
+  cancelBtn = reqID => {
+    const { me, cancelRequest, getGuesthistory } = this.props;
+    const username = me.username;
+    const room = username;
+    cancelRequest({reqID, username}).then(
+      () => {
+        setTimeout(() => {
+          alert('Done', 'This request status change to Cancel', [
+            { text: 'Ok', onPress: () => Promise.all([getGuesthistory({ room })])},
+          ])
+        }, 500);
+      },
+      (err) => {
+        setTimeout(() => {
+          alert('Error!!', 'Please Try Again Later', [
+            { text: 'Ok'},
+          ])
+        }, 500);
+      }
+    )
+  }
+
+  dateFormat = time => {
+    var d = moment(time)
+    return d.format('lll')
+  }
+
   render() {
     const { me, navigation, guesthistory } = this.props;
     if (!me) {
@@ -69,16 +122,48 @@ class HistoryPage extends React.Component {
         </View>
       )
     }
-    else if (!(guesthistory)) {
-      return (
-        <View style={styles.authen}>
-          <ActivityIndicator size="large" color="red" />
-          <Text>Loading...</Text>
-        </View>
-      )
-    }
+    const dateFormat = this.dateFormat;
+    const clickAction = this.clickAction;
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+        <View style={styles.scroll}>
+        <ScrollView>
+        {
+          guesthistory.map((l, i) => (
+            <ListItem
+              scaleProps={{
+                friction: 90,
+                tension: 100,
+                activeScale: 0.95,
+              }}
+              containerStyle={styles.listcontain}
+              key={i}
+              leftAvatar={
+                <Avatar
+                  rounded={false}
+                  source= {{ uri: l.image }}
+                  containerStyle= {{height: height*0.10, width: height*0.12, backgroundColor: '#fff'}}
+                  avatarStyle= {{height: height*0.10, width: height*0.12}}
+                />
+              }
+              title={`ID: ${l.id} Item: ${l.itemName}`} 
+              titleStyle={styles.titleitem} 
+              subtitle={
+                `status: ${l.status == 'R' ? `Paid\nAmount: ${l.amountReq}\nTime: ${this.dateFormat(l.time)}`:
+                l.status == 'C' ? `Cancel\nTime: ${this.dateFormat(l.time)}`:
+                l.status == 'A' ? `Accept\nAmount: ${l.amountReq}\nPrice: ${l.price} ${currency}\nTime: ${this.dateFormat(l.time)}`:
+                l.status == 'S' ? `Buy\nAmount: ${l.amountReq}\nPrice: ${l.price}\nTime: ${this.dateFormat(l.time)}`:
+                l.status == 'T' ? `To-Do\nAmount: ${l.amountReq}\nTime: ${this.dateFormat(l.time)}`:
+                l.status == 'Q' ? `Request\nAmount: ${l.amountReq}\nTime: ${this.dateFormat(l.time)}`:''}`
+              }
+              rightIcon= {l.status == 'Q' || l.status == 'T' ? {size: height*0.1, name: 'chevron-right'} : {}}
+              bottomDivider
+              onPress={l.status == 'Q'|| l.status == 'T' ? () => clickAction(l.status, l.id):()=>{}}
+            />
+          ))
+        }
+        </ScrollView>
+        </View>
         <View style={styles.tabBar}> 
           <TabMenu navigate={navigation.navigate} page='History'/>
         </View>
@@ -100,6 +185,7 @@ const mapDispatchToProps = dispatch => ({
   getMe: () => dispatch(LoginActions.me()),
   setLoading: status => dispatch(CommonActions.isLoading(status)),
   getGuesthistory: ({ room }) => dispatch(ItemActions.getGuesthistory({ room })),
+  cancelRequest: ({ reqID, username }) => dispatch(ItemActions.cancelRequest({ reqID, username })),
 });
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(HistoryPage);

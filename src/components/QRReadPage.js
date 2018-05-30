@@ -134,13 +134,14 @@ class QRCodePage extends React.Component {
       readData = JSON.parse(e.data);
       const type = readData.type,
         itemID = readData.itemID;
+        repair = this.repair
       if(type=='Repair') {
         getItemInfo({ itemID }).then(
           () => {
             const { itemInfo } = this.props;
             alert(`Inform repair ${itemInfo[0].itemName}`, 'No cost but are you sure?', [
               { text: 'Cancel', onPress: () => scanner.reactivate()},
-              { text: 'Ok', onPress: () => [scanner.reactivate()]},
+              { text: 'Ok', onPress: () => [scanner.reactivate(), repair(itemInfo[0].id)]},
             ])
           },
           (err) => {
